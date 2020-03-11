@@ -6,4 +6,4 @@ Garine Imamedjian - 260802664
 
 Katherine Sirois - 260805297
 
-Julianna Tchebotareva - 
+Julianna Tchebotareva - 260761726
