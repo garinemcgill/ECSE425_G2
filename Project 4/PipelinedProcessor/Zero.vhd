@@ -40,7 +40,7 @@ begin
 
 		-- J
 		when "11000" =>
-			branch <= '1';
+			branch <= '1';			-- all jumps take the branch automatically
 
 
 		-- JR (jump register)
