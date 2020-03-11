@@ -16,6 +16,7 @@ end ALU;
 architecture ALU_arch of ALU is
 
 signal hi, lo, remain_div, result_div : std_logic_vector (31 downto 0);
+signal result_mult : std_logic_vector (63 downto 0);
 
 begin
 
@@ -42,8 +43,9 @@ begin
 
 		-- MULT
 		when "00011" =>
-			hi <= std_logic_vector( to_unsigned( to_integer(unsigned(A_in)) * to_integer(unsigned(B_in)), 64 ) ) (63 downto 32);	-- 32 MSB from 64bit mult result (overflow)
-			lo <= std_logic_vector( to_unsigned( to_integer(unsigned(A_in)) * to_integer(unsigned(B_in)), 64 ) ) (31 downto 0);	-- 32 LSB from 64bit mult result
+			result_mult <= std_logic_vector( to_unsigned( to_integer(unsigned(A_in)) * to_integer(unsigned(B_in)), 64 ) );		--32b * 32b = 64b 
+			hi <= result_mult (63 downto 32);	-- 32 MSB from 64bit mult result (overflow)
+			lo <= result_mult (31 downto 0);	-- 32 LSB from 64bit mult result
 			C_out <= std_logic_vector( to_unsigned( to_integer(unsigned(A_in)) * to_integer(unsigned(B_in)), C_out'length ) );	-- regular multiply cast to 32 bits
 
 
@@ -51,7 +53,7 @@ begin
 		-- DIV
 		when "00100" =>
 			result_div <= std_logic_vector( to_unsigned( to_integer(unsigned(A_in)) / to_integer(unsigned(B_in)), C_out'length ) );		-- division result
-			remain_div <= std_logic_vector( to_unsigned( to_integer(unsigned(A_in)) mod to_integer(unsigned(B_in)), rem_div'length ) );	-- remainder of division
+			remain_div <= std_logic_vector( to_unsigned( to_integer(unsigned(A_in)) mod to_integer(unsigned(B_in)), remain_div'length ) );	-- remainder of division
 			hi <= remain_div;		-- from MIPS reference
 			lo <= result_div;		-- from MIPS reference
 			C_out <= result_div;		-- output = result 
